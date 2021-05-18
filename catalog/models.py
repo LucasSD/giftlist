@@ -17,8 +17,7 @@ class Gift(models.Model):
 
     # Foreign Key used because gift should only have one brand, but a brand can make multiple gifts
     # Brand as a string rather than object because it hasn't been declared yet in the file
-    brand = models.ForeignKey("catalog.brand", on_delete=models.RESTRICT, null=True)
-
+    brand = models.ForeignKey("Brand", on_delete=models.RESTRICT, null=True)
     description = models.TextField(max_length=1000, help_text='Enter a brief description of the gift')
     ref = models.CharField(max_length=20, unique=True,
                              help_text="Enter a product code or similar as a reference")
@@ -30,9 +29,11 @@ class Gift(models.Model):
     # Made_in as a string rather than object because it hasn't been declared yet in the file
     made_in = models.ForeignKey('Country', on_delete=models.RESTRICT, null=True)
 
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    def display_category(self):
+        """Create a string for the Category. This is required to display categories in Admin."""
+        return ', '.join(category.name for category in self.category.all()[:3])
 
-    url = models.URLField()
+    display_category.short_description = 'Genre'
 
     def __str__(self):
         """String for representing the Model object."""
@@ -45,8 +46,12 @@ class Gift(models.Model):
 class GiftInstance(models.Model):
     """Model representing a specific copy of a gift that appear on lists (i.e. that can be taken by a buyer)."""
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique ID for this specific gift requested by a single user')
-    gift = models.ForeignKey(Gift, on_delete=models.RESTRICT, null=True)
+    gift = models.ForeignKey("Gift", on_delete=models.RESTRICT, null=True)
     event_date = models.DateField(null=True, blank=True)
+    size = models.TextField(max_length=1000, default = '', help_text='Enter notes regarding what size you need')
+    colour = models.CharField(max_length=400, default = '', help_text='Enter notes regarding what colour you want')
+    price = models.DecimalField(max_digits=10, default = 0.00, decimal_places=2)
+    url = models.URLField(default = '', help_text="enter a link which might help your buyer")
 
     AVAILABLE_STATUS = (
         ('a', 'Available'),
@@ -71,8 +76,7 @@ class GiftInstance(models.Model):
 class Brand(models.Model):
     """Model representing a brand."""
     name = models.CharField(max_length=100)
-    est = models.DateField(null=True, blank=True)
-    gift = models.ForeignKey(Gift, on_delete=models.RESTRICT, null=True)
+    est = models.IntegerField(default=0)
     
     class Meta:
         ordering = ['name']
@@ -84,3 +88,12 @@ class Brand(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return f"{self.name}"
+
+class Country(models.Model):
+    """Model representing a Country"""
+    name = models.CharField(max_length=200,
+                            help_text="Enter the country the gift was made in")
+
+    def __str__(self):
+        """String for representing the Model object (in Admin site etc.)"""
+        return self.name

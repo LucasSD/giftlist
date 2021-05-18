@@ -3,7 +3,7 @@ from datetime import datetime
 
 from django.test import TestCase
 
-from catalog.models import Gift, Category, Brand, GiftInstance
+from catalog.models import Gift, Category, Brand, GiftInstance, Country
 
 class CategoryModelTest(TestCase):
     @classmethod
@@ -16,10 +16,36 @@ class CategoryModelTest(TestCase):
         max_length = test_category._meta.get_field("name").max_length
         self.assertEqual(max_length, 200)
 
+    def test_name_help_text(self):
+        test_category = Category.objects.get(id=1)
+        help_text = test_category._meta.get_field("name").help_text
+        self.assertEqual(help_text, 'Enter a gift category (e.g. electronics or clothes)')
+
     def test_object_name_is_category_name(self):  # test __str__
         test_category = Category.objects.get(id=1)
         expected_object_name = f"{test_category.name}"
         self.assertEqual(expected_object_name, str(test_category))
+
+class CountryModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # Set up non-modified objects used by all test methods
+        Country.objects.create(name="Brazil")
+
+    def test_name_max_length(self):
+        test_category = Country.objects.get(id=1)
+        max_length = test_category._meta.get_field("name").max_length
+        self.assertEqual(max_length, 200)
+
+    def test_name_help_text(self):
+        test_country = Country.objects.get(id=1)
+        help_text = test_country._meta.get_field("name").help_text
+        self.assertEqual(help_text, "Enter the country the gift was made in")
+
+    def test_object_name_is_country_name(self):  # test __str__
+        test_country = Country.objects.get(id=1)
+        expected_object_name = f"{test_country.name}"
+        self.assertEqual(expected_object_name, str(test_country))
 
 class GiftModelTest(TestCase):
     @classmethod
@@ -30,15 +56,13 @@ class GiftModelTest(TestCase):
         test_country = Country.objects.create(name="USA")
         test_brand = Brand.objects.create(
             name="Apple",
-            est=datetime.date(1976)
+            est=1976
             )
 
         test_gift = Gift.objects.create(
             name="Iphone 11",
             description = "A brilliant smartphone",
             ref = "randomcodeABC",
-            price = 1000.00,
-            url = "https://www.apple.com/uk/shop/buy-iphone/iphone-11",
             brand = test_brand,
             made_in = test_country,
         )
@@ -90,16 +114,6 @@ class GiftModelTest(TestCase):
         expected_country = test_gift.made_in
         self.assertEqual(str(expected_country), "USA")
 
-    def test_price_max_digits(self):
-        test_gift = Gift.objects.get(id=1)
-        expected_max_digits = test_gift._meta.get_field("price").max_digits
-        self.assertEqual(expected_max_digits, 10)
-
-    def test_price_decimal_places(self):
-        test_gift = Gift.objects.get(id=1)
-        expected_decimal_places = test_gift._meta.get_field("price").decimal_places
-        self.assertEqual(expected_decimal_places, 10)
-
     def test_object_name_is_gift_name(self):  # test __str__
         test_gift = Gift.objects.get(id=1)
         expected_object_name = f"{test_gift.name}"
@@ -109,4 +123,15 @@ class GiftModelTest(TestCase):
         test_gift = Gift.objects.get(id=1)
         # This will also fail if the urlconf is not defined.
         self.assertEqual(test_gift.get_absolute_url(), '/catalog/gift/1')
+
+    '''def test_price_max_digits(self):
+        test_gift = Gift.objects.get(id=1)
+        expected_max_digits = test_gift._meta.get_field("price").max_digits
+        self.assertEqual(expected_max_digits, 10)
+
+    def test_price_decimal_places(self):
+        test_gift = Gift.objects.get(id=1)
+        expected_decimal_places = test_gift._meta.get_field("price").decimal_places
+        self.assertEqual(expected_decimal_places, 2)'''
+
 
