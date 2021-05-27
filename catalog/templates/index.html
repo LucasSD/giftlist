@@ -1,0 +1,14 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>GiftList Home</h1>
+  <p>Welcome to GiftList, a website developed by <em>Lucas</em>!</p>
+  <h2>Dynamic content</h2>
+  <p>The GiftList has the following record counts:</p>
+  <ul>
+    <li><strong>Total Gifts:</strong> {{ num_gifts }}</li>
+    <li><strong>Total Gifts Requested:</strong> {{ num_instances }}</li>
+    <li><strong>Total Outstanding Gifts:</strong> {{ num_instances_available }}</li>
+    <li><strong>Total Brands:</strong> {{ num_brands }}</li>
+  </ul>
+{% endblock %}
