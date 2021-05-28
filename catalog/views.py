@@ -15,11 +15,17 @@ def index(request):
     # The 'all()' is implied by default.
     num_brands = Brand.objects.count()
 
+    # random challenge
+    num_perfume_gifts = Gift.objects.filter(description__icontains='Perfume').count()
+    num_older_brands = Brand.objects.exclude(est__gt=1999).count()
+
     context = {
         'num_gifts': num_gifts,
         'num_instances': num_instances,
         'num_instances_available': num_instances_available,
         'num_brands': num_brands,
+        'num_perfume_gifts': num_perfume_gifts,
+        'num_older_brands': num_older_brands,
     }
 
     # Render the HTML template index.html with the data in the context variable

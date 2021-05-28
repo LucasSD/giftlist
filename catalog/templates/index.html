@@ -1,5 +1,7 @@
 {% extends "base_generic.html" %}
 
+{% block title %}<title>GiftList</title>{% endblock %}
+
 {% block content %}
   <h1>GiftList Home</h1>
   <p>Welcome to GiftList, a website developed by <em>Lucas</em>!</p>
@@ -10,5 +12,10 @@
     <li><strong>Total Gifts Requested:</strong> {{ num_instances }}</li>
     <li><strong>Total Outstanding Gifts:</strong> {{ num_instances_available }}</li>
     <li><strong>Total Brands:</strong> {{ num_brands }}</li>
+    <li><strong>Total Perfume Gifts:</strong> {{ num_perfume_gifts }}</li>
+    <li><strong>Total Brands Established pre-2000:</strong> {{ num_older_brands }}</li>
   </ul>
 {% endblock %}
+
+
+
