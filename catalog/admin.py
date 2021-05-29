@@ -2,10 +2,8 @@ from django.contrib import admin
 
 from .models import Gift, Category, Brand, GiftInstance, Country
 
-#admin.site.register(Gift)
+
 admin.site.register(Category)
-#admin.site.register(Brand)
-#admin.site.register(GiftInstance)
 admin.site.register(Country)
 
 class GiftsInline(admin.TabularInline):

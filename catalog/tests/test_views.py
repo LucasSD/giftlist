@@ -1,3 +1,6 @@
+from datetime import datetime
+
 from django.test import TestCase
 
-# Create your tests here.
+from catalog.models import Gift, Category, Brand, GiftInstance, Country
+

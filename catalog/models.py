@@ -12,7 +12,7 @@ class Category(models.Model):
         return self.name
 
 class Gift(models.Model):
-    """Model representing a Gift (but not a gift instance which a user has requested)."""
+    """Model representing a Gift (but not a gift instance which is more specific and which a user has requested)."""
     name = models.CharField(max_length=200)
 
     # Foreign Key used because gift should only have one brand, but a brand can make multiple gifts
@@ -33,7 +33,7 @@ class Gift(models.Model):
         """Create a string for the Category. This is required to display categories in Admin."""
         return ', '.join(category.name for category in self.category.all()[:3])
 
-    display_category.short_description = 'Genre'
+    display_category.short_description = 'Category'
 
     def __str__(self):
         """String for representing the Model object."""
@@ -44,7 +44,7 @@ class Gift(models.Model):
         return reverse('gift-detail', args=[str(self.id)])
 
 class GiftInstance(models.Model):
-    """Model representing a specific copy of a gift that appear on lists (i.e. that can be taken by a buyer)."""
+    """Model representing a specific size or colour of a gift that appear on lists (i.e. that can be taken by a buyer)."""
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique ID for this specific gift requested by a single user')
     gift = models.ForeignKey("Gift", on_delete=models.RESTRICT, null=True)
     event_date = models.DateField(null=True, blank=True)
@@ -70,8 +70,8 @@ class GiftInstance(models.Model):
         ordering = ['id']
 
     def __str__(self):
-        """String for representing the Model object."""
-        return f'{self.id} ({self.gift.name})'
+        """String for representing the GiftInstance object."""
+        return f'{self.gift.name} {self.event_date}'
 
 class Brand(models.Model):
     """Model representing a brand."""
