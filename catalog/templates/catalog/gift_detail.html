@@ -1,0 +1,27 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Title: {{ gift.name }}</h1>
+
+  <p><strong>Brand:</strong> <a href="">{{ gift.brand }}</a></p> <!-- author detail link not yet defined -->
+  <p><strong>Description:</strong> {{ gift.description }}</p>
+  <p><strong>Reference:</strong> {{ gift.ref }}</p>
+  <p><strong>Made In:</strong> {{ gift.made_in }}</p>
+  <p><strong>Category:</strong> {{ gift.category.all|join:", " }}</p>
+
+  <div style="margin-left:20px;margin-top:20px">
+    <h4>Requests Made for this Gift</h4>
+
+    {% for instance in gift.giftinstance_set.all %}
+      <hr>
+      <p class="{% if instance.status == 'a' %}text-success{% else %}text-danger{% endif %}">
+        {{ instance.get_status_display }}
+      </p>
+      {% if instance.status != 'a' %}
+        <p><strong>Ah, sorry, someone is already buying this - please choose something else.</strong></p>
+      {% endif %}
+      <p><strong>Occasion Date:</strong> {{ instance.event_date }}</p>
+      <p class="text-muted"><strong>Id:</strong> {{ instance.id }}</p> {#user's name here later#}
+    {% endfor %}
+  </div>
+{% endblock %}
