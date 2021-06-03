@@ -29,6 +29,9 @@ class Gift(models.Model):
     # Made_in as a string rather than object because it hasn't been declared yet in the file
     made_in = models.ForeignKey('Country', on_delete=models.RESTRICT, null=True)
 
+    class Meta:
+        ordering = ['id'] # this orders the database and avoids ordering warnings related to pagination
+
     def display_category(self):
         """Create a string for the Category. This is required to display categories in Admin."""
         return ', '.join(category.name for category in self.category.all()[:3])

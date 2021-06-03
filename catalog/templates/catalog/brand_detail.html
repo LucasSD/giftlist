@@ -1,0 +1,19 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>{{ brand.name }}</h1>
+
+  <p><strong>Established in:</strong> {{ brand.est }}</p>
+
+  <div style="margin-left:20px;margin-top:20px">
+    <h4>Gifts by this Brand:</h4>
+
+    {% for gift in brand.gift_set.all %}
+      <hr>
+      <p><a href="{{ gift.get_absolute_url }}">{{ gift.name }}</a></p>
+      <p><strong>Category:</strong> {{ gift.category.all|join:", " }}</p>
+      <p><strong>Made in:</strong> {{ gift.made_in }}</p>
+      <p class="text-muted"><strong>Description:</strong> {{ gift.description }}</p> 
+    {% endfor %}
+  </div>
+{% endblock %}

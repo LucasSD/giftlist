@@ -38,3 +38,10 @@ class GiftListView(generic.ListView):
 
 class GiftDetailView(generic.DetailView):
     model = Gift
+
+class BrandListView(generic.ListView):
+    model = Brand
+    paginate_by = 2
+
+class BrandDetailView(generic.DetailView):
+    model = Brand

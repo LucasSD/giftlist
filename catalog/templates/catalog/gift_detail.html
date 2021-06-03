@@ -1,9 +1,9 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>Title: {{ gift.name }}</h1>
+  <h1>{{ gift.name }}</h1>
 
-  <p><strong>Brand:</strong> <a href="">{{ gift.brand }}</a></p> <!-- author detail link not yet defined -->
+  <p><strong>Brand:</strong> <a href="{{ gift.brand.get_absolute_url }}">{{ gift.brand }}</a></p> 
   <p><strong>Description:</strong> {{ gift.description }}</p>
   <p><strong>Reference:</strong> {{ gift.ref }}</p>
   <p><strong>Made In:</strong> {{ gift.made_in }}</p>

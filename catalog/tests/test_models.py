@@ -185,19 +185,12 @@ class GiftInstanceModelTest(TestCase):
         expected_string = f"{test_gift_instance.gift.name} {test_gift_instance.event_date}"
         self.assertEqual(expected_string, str(test_gift_instance))
 
-class GiftInstanceModelTest(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        # Set up non-modified objects used by all test methods
-        Brand.objects.create(
-            name="Apple",
-            est=1976
-            )
-
     def test_get_absolute_url(self):
         test_brand = Brand.objects.get(id=1)
         # This will also fail if the urlconf is not defined.
         self.assertEqual(test_brand.get_absolute_url(), '/catalog/brand/1')
+
+
 
 
 
