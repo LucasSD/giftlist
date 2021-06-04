@@ -62,6 +62,10 @@ class CatalogIndexViewTest(TestCase):
 
     def test_context(self):
         response = self.client.get(reverse("index"))
+        request = response.wsgi_request
+        num_visits = request.session.get('num_visits', 0)
+        response = self.client.get(reverse("index"))
+        
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["num_gifts"], 2)
         self.assertEqual(response.context['num_instances'], 2)
@@ -69,6 +73,7 @@ class CatalogIndexViewTest(TestCase):
         self.assertEqual(response.context['num_brands'], 2)
         self.assertEqual(response.context['num_perfume_gifts'], 1)
         self.assertEqual(response.context['num_older_brands'], 1)
+        self.assertEqual(response.context['num_visits'], 1)
 
 class GiftListViewTest(TestCase):
     @classmethod

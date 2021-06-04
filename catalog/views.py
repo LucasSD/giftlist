@@ -16,6 +16,10 @@ def index(request):
     # The 'all()' is implied by default.
     num_brands = Brand.objects.count()
 
+    # session info
+    num_visits = request.session.get('num_visits', 0)
+    request.session['num_visits'] = num_visits + 1
+
     # random challenge
     num_perfume_gifts = Gift.objects.filter(description__icontains='Perfume').count()
     num_older_brands = Brand.objects.exclude(est__gt=1999).count()
@@ -27,6 +31,7 @@ def index(request):
         'num_brands': num_brands,
         'num_perfume_gifts': num_perfume_gifts,
         'num_older_brands': num_older_brands,
+        'num_visits': num_visits,
     }
 
     # Render the HTML template index.html with the data in the context variable
