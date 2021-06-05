@@ -1,6 +1,8 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 
+from datetime import date
 import uuid # Required for unique book instances
 
 class Category(models.Model):
@@ -55,6 +57,15 @@ class GiftInstance(models.Model):
     colour = models.CharField(max_length=400, default = '', help_text='Enter notes regarding what colour you want')
     price = models.DecimalField(max_digits=10, default = 0.00, decimal_places=2)
     url = models.URLField(default = '', help_text="enter a link which might help your buyer")
+
+    # on_delete setting may change between dev and production
+    requester = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+
+    @property
+    def is_expired(self):
+        if date.today() > self.event_date:
+            return True
+        return False
 
     AVAILABLE_STATUS = (
         ('a', 'Available'),
