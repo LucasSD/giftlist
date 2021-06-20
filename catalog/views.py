@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.views import generic
 
 from catalog.models import Brand, Category, Gift, GiftInstance
@@ -63,9 +64,10 @@ class GiftInstanceListView(LoginRequiredMixin, generic.ListView):
             QuerySet: A list of GiftInstance objects.
         """
 
-        return GiftInstance.objects.filter(requester=self.request.user)
+        return GiftInstance.objects.filter(requester=self.request.user).order_by('event_date')
 
 # add login mixin
 class GiftInstanceUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = GiftInstance
     fields = ["event_date", "size", "colour", "price", "url", "requester"]
+    success_url = reverse_lazy("mygifts")

@@ -8,6 +8,6 @@ urlpatterns = [
     path('brands/', views.BrandListView.as_view(), name='brands'),
     path('brand/<int:pk>', views.BrandDetailView.as_view(), name='brand-detail'),
     path('mygifts/', views.GiftInstanceListView.as_view(), name='mygifts'),
-    path('mygift/<slug:pk>', views.GiftInstanceUpdateView.as_view(), name='giftinstance-update'),
+    path('mygift/<uuid:pk>', views.GiftInstanceUpdateView.as_view(), name='giftinstance-update'),
 
 ]

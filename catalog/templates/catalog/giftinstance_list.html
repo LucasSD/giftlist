@@ -6,7 +6,7 @@
   <ul>
     {% for my_gift in giftinstance_list %}
       <li>
-        <a href="{{ my_gift.get_absolute_url }}">{{ my_gift.gift.brand }}</a> ({{my_gift.gift.name}})
+        <a href="{{ my_gift.get_absolute_url }}">{{ my_gift.gift.brand }}</a> ({{my_gift.gift.name}}) ({{my_gift.event_date}})
       </li>
     {% endfor %}
   </ul>
