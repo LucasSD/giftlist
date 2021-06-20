@@ -1,0 +1,16 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>My Gift List</h1>
+  {% if giftinstance_list %}
+  <ul>
+    {% for my_gift in giftinstance_list %}
+      <li>
+        <a href="{{ my_gift.get_absolute_url }}">{{ my_gift.gift.brand }}</a> ({{my_gift.gift.name}})
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>You have not requested any gifts.</p>
+  {% endif %} 
+{% endblock %}

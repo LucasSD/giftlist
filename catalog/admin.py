@@ -29,5 +29,5 @@ class GiftAdmin(admin.ModelAdmin):
 
 @admin.register(GiftInstance)
 class GiftInstanceAdmin(admin.ModelAdmin):
-    list_display = ('gift','event_date',)
+    list_display = ('gift','event_date', "requester")
     list_filter = ('gift','event_date',)

@@ -87,6 +87,10 @@ class GiftInstance(models.Model):
         """String for representing the GiftInstance object."""
         return f'{self.gift.name} {self.event_date}'
 
+    def get_absolute_url(self):
+        """Returns the url to access a detail record for this gift instance."""
+        return reverse('giftinstance-update', args=[str(self.id)])
+
 class Brand(models.Model):
     """Model representing a brand."""
     name = models.CharField(max_length=100)

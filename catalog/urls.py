@@ -7,4 +7,7 @@ urlpatterns = [
     path('gift/<int:pk>', views.GiftDetailView.as_view(), name='gift-detail'),
     path('brands/', views.BrandListView.as_view(), name='brands'),
     path('brand/<int:pk>', views.BrandDetailView.as_view(), name='brand-detail'),
+    path('mygifts/', views.GiftInstanceListView.as_view(), name='mygifts'),
+    path('mygift/<slug:pk>', views.GiftInstanceUpdateView.as_view(), name='giftinstance-update'),
+
 ]

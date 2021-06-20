@@ -1,7 +1,9 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.views import generic
 
-from catalog.models import Gift, Brand, GiftInstance, Category
+from catalog.models import Brand, Category, Gift, GiftInstance
+
 
 def index(request):
     """View function for home page of site."""
@@ -50,3 +52,20 @@ class BrandListView(generic.ListView):
 
 class BrandDetailView(generic.DetailView):
     model = Brand
+
+class GiftInstanceListView(LoginRequiredMixin, generic.ListView):
+    model = GiftInstance
+    paginate_by = 3
+
+    def get_queryset(self):
+        """Override to return GiftInstance objects uploaded by current user.
+        Returns:
+            QuerySet: A list of GiftInstance objects.
+        """
+
+        return GiftInstance.objects.filter(requester=self.request.user)
+
+# add login mixin
+class GiftInstanceUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = GiftInstance
+    fields = ["event_date", "size", "colour", "price", "url", "requester"]

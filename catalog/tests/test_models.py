@@ -186,9 +186,9 @@ class GiftInstanceModelTest(TestCase):
         self.assertEqual(expected_string, str(test_gift_instance))
 
     def test_get_absolute_url(self):
-        test_brand = Brand.objects.get(id=1)
+        test_giftinstance = GiftInstance.objects.all()[0]
         # This will also fail if the urlconf is not defined.
-        self.assertEqual(test_brand.get_absolute_url(), '/catalog/brand/1')
+        self.assertEqual(test_giftinstance.get_absolute_url(), f"/catalog/mygift/{test_giftinstance.id}")
 
 
 
