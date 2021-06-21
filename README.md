@@ -52,6 +52,8 @@ run `python manage.py createsuperuser` and follow the instructions.
 Still being developed. 
 ###### To do:
 
+- Add forms for users to add their own gift requests and to build their own lists (gifts currently need to be added in Django Admin) 
+
 - Add a list of all users, including links to view their gift lists
 
 - Add functionality to enable users to select and tag the gift(s) they will buy for another user
