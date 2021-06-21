@@ -1,44 +1,59 @@
+import uuid  # Required for unique book instances
+from datetime import date
+
+from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
-from django.contrib.auth.models import User
 
-from datetime import date
-import uuid # Required for unique book instances
 
 class Category(models.Model):
     """Model representing a gift category."""
-    name = models.CharField(max_length=200, help_text='Enter a gift category (e.g. electronics or clothes)')
+
+    name = models.CharField(
+        max_length=200, help_text="Enter a gift category (e.g. electronics or clothes)"
+    )
 
     def __str__(self):
         """String for representing the Model object."""
         return self.name
 
+
 class Gift(models.Model):
     """Model representing a Gift (but not a gift instance which is more specific and which a user has requested)."""
+
     name = models.CharField(max_length=200)
 
     # Foreign Key used because gift should only have one brand, but a brand can make multiple gifts
     # Brand as a string rather than object because it hasn't been declared yet in the file
     brand = models.ForeignKey("Brand", on_delete=models.RESTRICT, null=True)
-    description = models.TextField(max_length=1000, help_text='Enter a brief description of the gift')
-    ref = models.CharField(max_length=20, unique=True,
-                             help_text="Enter a product code or similar as a reference")
+    description = models.TextField(
+        max_length=1000, help_text="Enter a brief description of the gift"
+    )
+    ref = models.CharField(
+        max_length=20,
+        unique=True,
+        help_text="Enter a product code or similar as a reference",
+    )
 
     # ManyToManyField used because category can contain many gifts. Gifts can cover many categories.
-    category = models.ManyToManyField(Category, help_text='Select a category for this gift')
+    category = models.ManyToManyField(
+        Category, help_text="Select a category for this gift"
+    )
 
     # Foreign Key used because gift should only have one made_in(country), but a country can make multiple gifts
     # Made_in as a string rather than object because it hasn't been declared yet in the file
-    made_in = models.ForeignKey('Country', on_delete=models.RESTRICT, null=True)
+    made_in = models.ForeignKey("Country", on_delete=models.RESTRICT, null=True)
 
     class Meta:
-        ordering = ['id'] # this orders the database and avoids ordering warnings related to pagination
+        ordering = [
+            "id"
+        ]  # this orders the database and avoids ordering warnings related to pagination
 
     def display_category(self):
         """Create a string for the Category. This is required to display categories in Admin."""
-        return ', '.join(category.name for category in self.category.all()[:3])
+        return ", ".join(category.name for category in self.category.all()[:3])
 
-    display_category.short_description = 'Category'
+    display_category.short_description = "Category"
 
     def __str__(self):
         """String for representing the Model object."""
@@ -46,20 +61,38 @@ class Gift(models.Model):
 
     def get_absolute_url(self):
         """Returns the url to access a detail record for this gift."""
-        return reverse('gift-detail', args=[str(self.id)])
+        return reverse("gift-detail", args=[str(self.id)])
+
 
 class GiftInstance(models.Model):
     """Model representing a specific size or colour of a gift that appear on lists (i.e. that can be taken by a buyer)."""
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique ID for this specific gift requested by a single user')
+
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        help_text="Unique ID for this specific gift requested by a single user",
+    )
     gift = models.ForeignKey("Gift", on_delete=models.RESTRICT, null=True)
     event_date = models.DateField(null=True, blank=True)
-    size = models.TextField(max_length=1000, default = '', help_text='Enter notes regarding what size you need')
-    colour = models.CharField(max_length=400, default = '', help_text='Enter notes regarding what colour you want')
-    price = models.DecimalField(max_digits=10, default = 0.00, decimal_places=2)
-    url = models.URLField(default = '', help_text="enter a link which might help your buyer")
+    size = models.TextField(
+        max_length=1000,
+        default="",
+        help_text="Enter notes regarding what size you need",
+    )
+    colour = models.CharField(
+        max_length=400,
+        default="",
+        help_text="Enter notes regarding what colour you want",
+    )
+    price = models.DecimalField(max_digits=10, default=0.00, decimal_places=2)
+    url = models.URLField(
+        default="", help_text="enter a link which might help your buyer"
+    )
 
     # on_delete setting may change between dev and production
-    requester = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    requester = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, blank=True
+    )
 
     @property
     def is_expired(self):
@@ -68,49 +101,54 @@ class GiftInstance(models.Model):
         return False
 
     AVAILABLE_STATUS = (
-        ('a', 'Available'),
-        ('t', 'Taken'),
+        ("a", "Available"),
+        ("t", "Taken"),
     )
 
     status = models.CharField(
         max_length=1,
         choices=AVAILABLE_STATUS,
         blank=True,
-        default='a',
-        help_text='Gift availability',
+        default="a",
+        help_text="Gift availability",
     )
 
     class Meta:
-        ordering = ['id']
+        ordering = ["id"]
 
     def __str__(self):
         """String for representing the GiftInstance object."""
-        return f'{self.gift.name} {self.event_date}'
+        return f"{self.gift.name} {self.event_date}"
 
     def get_absolute_url(self):
         """Returns the url to access a detail record for this gift instance."""
-        return reverse('giftinstance-update', args=[str(self.id)])
+        return reverse("giftinstance-update", args=[str(self.id)])
+
 
 class Brand(models.Model):
     """Model representing a brand."""
+
     name = models.CharField(max_length=100)
     est = models.IntegerField(default=0)
-    
+
     class Meta:
-        ordering = ['name']
+        ordering = ["name"]
 
     def get_absolute_url(self):
         """Returns the url to access a particular brand instance."""
-        return reverse('brand-detail', args=[str(self.id)])
+        return reverse("brand-detail", args=[str(self.id)])
 
     def __str__(self):
         """String for representing the Model object."""
         return f"{self.name}"
 
+
 class Country(models.Model):
     """Model representing a Country"""
-    name = models.CharField(max_length=200,
-                            help_text="Enter the country the gift was made in")
+
+    name = models.CharField(
+        max_length=200, help_text="Enter the country the gift was made in"
+    )
 
     def __str__(self):
         """String for representing the Model object (in Admin site etc.)"""

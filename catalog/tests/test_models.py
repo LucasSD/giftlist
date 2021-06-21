@@ -1,9 +1,9 @@
-
 from datetime import datetime
 
 from django.test import TestCase
 
 from catalog.models import Gift, Category, Brand, GiftInstance, Country
+
 
 class CategoryModelTest(TestCase):
     @classmethod
@@ -15,8 +15,8 @@ class CategoryModelTest(TestCase):
         Category.objects.create(name="Eau de cologne")
         Gift.objects.create(
             name="Chanel Man",
-            description = "A brilliant smell",
-            ref = "randomcodeABC",
+            description="A brilliant smell",
+            ref="randomcodeABC",
         )
 
     def test_name_max_length(self):
@@ -27,7 +27,9 @@ class CategoryModelTest(TestCase):
     def test_name_help_text(self):
         test_category = Category.objects.get(id=1)
         help_text = test_category._meta.get_field("name").help_text
-        self.assertEqual(help_text, 'Enter a gift category (e.g. electronics or clothes)')
+        self.assertEqual(
+            help_text, "Enter a gift category (e.g. electronics or clothes)"
+        )
 
     def test_display_category(self):
         test_cat1 = Category.objects.get(id=1)
@@ -37,8 +39,9 @@ class CategoryModelTest(TestCase):
         test_gift = Gift.objects.get(id=1)
         test_gift.category.add(test_cat1, test_cat2, test_cat3, test_cat4)
         # Below only returns the first three categories
-        self.assertEqual(test_gift.display_category(), 'Perfume, Fragrance, Eau de parfum')
-
+        self.assertEqual(
+            test_gift.display_category(), "Perfume, Fragrance, Eau de parfum"
+        )
 
     def test_object_name_is_category_name(self):  # test __str__
         test_category = Category.objects.get(id=1)
@@ -67,6 +70,7 @@ class CountryModelTest(TestCase):
         expected_object_name = f"{test_country.name}"
         self.assertEqual(expected_object_name, str(test_country))
 
+
 class GiftModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -74,17 +78,14 @@ class GiftModelTest(TestCase):
 
         test_category = Category.objects.create(name="Mobile Phone")
         test_country = Country.objects.create(name="USA")
-        test_brand = Brand.objects.create(
-            name="Apple",
-            est=1976
-            )
+        test_brand = Brand.objects.create(name="Apple", est=1976)
 
         test_gift = Gift.objects.create(
             name="Iphone 11",
-            description = "A brilliant smartphone",
-            ref = "randomcodeABC",
-            brand = test_brand,
-            made_in = test_country,
+            description="A brilliant smartphone",
+            ref="randomcodeABC",
+            brand=test_brand,
+            made_in=test_country,
         )
 
     def test_name_max_length(self):
@@ -123,7 +124,7 @@ class GiftModelTest(TestCase):
         test_gift = Gift.objects.get(id=1)
         max_length = test_gift._meta.get_field("ref").max_length
         self.assertEqual(max_length, 20)
-    
+
     def test_ref_help_text(self):
         test_gift = Gift.objects.get(id=1)
         help_text = test_gift._meta.get_field("ref").help_text
@@ -142,9 +143,9 @@ class GiftModelTest(TestCase):
     def test_get_absolute_url(self):
         test_gift = Gift.objects.get(id=1)
         # This will also fail if the urlconf is not defined.
-        self.assertEqual(test_gift.get_absolute_url(), '/catalog/gift/1')
+        self.assertEqual(test_gift.get_absolute_url(), "/catalog/gift/1")
 
-    ''' test below may be needed if I change fields between Gift and GiftInstance
+    """ test below may be needed if I change fields between Gift and GiftInstance
     def test_price_max_digits(self):
         test_gift = Gift.objects.get(id=1)
         expected_max_digits = test_gift._meta.get_field("price").max_digits
@@ -153,7 +154,8 @@ class GiftModelTest(TestCase):
     def test_price_decimal_places(self):
         test_gift = Gift.objects.get(id=1)
         expected_decimal_places = test_gift._meta.get_field("price").decimal_places
-        self.assertEqual(expected_decimal_places, 2)'''
+        self.assertEqual(expected_decimal_places, 2)"""
+
 
 class GiftInstanceModelTest(TestCase):
     @classmethod
@@ -161,39 +163,30 @@ class GiftInstanceModelTest(TestCase):
         # Set up non-modified objects used by all test methods
 
         test_country = Country.objects.create(name="USA")
-        test_brand = Brand.objects.create(
-            name="Apple",
-            est=1976
-            )
+        test_brand = Brand.objects.create(name="Apple", est=1976)
 
         test_gift = Gift.objects.create(
             name="Iphone 11",
-            description = "A brilliant smartphone",
-            ref = "randomcodeABC",
-            brand = test_brand,
-            made_in = test_country,
+            description="A brilliant smartphone",
+            ref="randomcodeABC",
+            brand=test_brand,
+            made_in=test_country,
         )
 
         test_gift = Gift.objects.get(id=1)
-        GiftInstance.objects.create(
-            gift=test_gift,
-            event_date = datetime(2021, 11, 5)
-        )
+        GiftInstance.objects.create(gift=test_gift, event_date=datetime(2021, 11, 5))
 
-    def test_object_str(self): 
+    def test_object_str(self):
         test_gift_instance = GiftInstance.objects.all()[0]
-        expected_string = f"{test_gift_instance.gift.name} {test_gift_instance.event_date}"
+        expected_string = (
+            f"{test_gift_instance.gift.name} {test_gift_instance.event_date}"
+        )
         self.assertEqual(expected_string, str(test_gift_instance))
 
     def test_get_absolute_url(self):
         test_giftinstance = GiftInstance.objects.all()[0]
         # This will also fail if the urlconf is not defined.
-        self.assertEqual(test_giftinstance.get_absolute_url(), f"/catalog/mygift/{test_giftinstance.id}")
-
-
-
-
-
-    
-
-
+        self.assertEqual(
+            test_giftinstance.get_absolute_url(),
+            f"/catalog/mygift/{test_giftinstance.id}",
+        )
