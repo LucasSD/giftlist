@@ -333,7 +333,9 @@ class GiftInstanceUpdateViewTest(TestCase):
         self.assertTemplateUsed(response, "base_generic.html")
 
     def test_context(self):
-        test_giftinstance = GiftInstance.objects.get(id=1)
+        # get object by status for tests. UUID as pk is not necessary but removing
+        # UUID field causes migration problems
+        test_giftinstance = GiftInstance.objects.get(status="t")
         response = self.client.get(
             reverse("giftinstance-update", kwargs={"pk": test_giftinstance.id})
         )
