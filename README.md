@@ -13,6 +13,9 @@ Python 3.9, Django==3.2.3, coverage==5.5, Black
 
 Please follow the instructions below to run this application. 
 
+1 - download this repo as a zip file and unzip it to your working directory.  
+2 - install Python 3.9 if you haven't already
+
 ``sh
 ## (Optional) Create and use a virtual environment:
 ## https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/#creating-a-virtual-environment
