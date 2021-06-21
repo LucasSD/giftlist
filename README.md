@@ -23,7 +23,7 @@ source env/bin/activate
 ## https://pip.pypa.io/en/stable/user_guide/#requirements-files
 pip install -r requirements.txt
 
-## Run my tests(all should pass):
+## Run my tests (all should pass):
 python manage.py test
 
 ## Optional: run Coverage (using batch file) to receive a test coverage report in stdout
