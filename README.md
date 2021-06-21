@@ -17,7 +17,6 @@ Please follow the instructions below to run this application.
 2 - install Python 3.9 if you haven't already
 
 
-sh
 ## (Optional) Create and use a virtual environment:
 ## https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/#creating-a-virtual-environment
 ```python -m venv env```
