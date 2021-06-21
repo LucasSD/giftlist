@@ -1,4 +1,4 @@
-![](link image here)
+![](giftlistcover.png)
 # Introduction
 
 The aim of this project is to create a website to assist my family in creating gift lists for Christmas, birthdays and other occasions. Each family member can create their own list, providing specific details of the gift they would like. 
@@ -7,12 +7,18 @@ which gifts they will receive.
 
 ## Technologies
 
-Python 3.9,  Black
-
-## Known Issues
+Python 3.9, Django==3.2.3, coverage==5.5, Black
 
 ## Project Status
 
 Still being developed. 
 ###### To do:
+
+- Add a list of all users, including links to view their gift lists. 
+
+- Add functionality to enable users to select and tag the gift(s) they will buy for another user
+
+- Add full Django authorisation functionality, so that users can create their own accounts
+
+- Add secret santa functionality, including e-mails to notify users who they will be buying for. 
 
