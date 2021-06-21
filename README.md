@@ -39,7 +39,9 @@ python manage.py runserver
 
 After these commands, you should be able to test my app manually at http://localhost:8000/.
 
-You will need to create a super user to access the Django admin site and to login (https://docs.djangoproject.com/en/3.2/ref/contrib/admin/): to do this, run `python manage.py createsuperuser` and follow the instructions.
+You will need to create a super user to access the Django admin site and to 
+login (https://docs.djangoproject.com/en/3.2/ref/contrib/admin/): to do this, 
+run `python manage.py createsuperuser` and follow the instructions.
 
 ## Project Status
 
