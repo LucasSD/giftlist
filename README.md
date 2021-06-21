@@ -52,11 +52,11 @@ run `python manage.py createsuperuser` and follow the instructions.
 Still being developed. 
 ###### To do:
 
-- Add a list of all users, including links to view their gift lists. 
+- Add a list of all users, including links to view their gift lists
 
 - Add functionality to enable users to select and tag the gift(s) they will buy for another user
 
 - Add full Django authorisation functionality, so that users can create their own accounts
 
-- Add Secret Santa functionality, including e-mails to notify users who they will be buying for. 
+- Add Secret Santa functionality, including e-mails to notify users who they will be buying for 
 
