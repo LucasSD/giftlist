@@ -23,8 +23,6 @@ class Gift(models.Model):
 
     name = models.CharField(max_length=200)
 
-    # Foreign Key used because gift should only have one brand, but a brand can make multiple gifts
-    # Brand as a string rather than object because it hasn't been declared yet in the file
     brand = models.ForeignKey("Brand", on_delete=models.RESTRICT, null=True)
     description = models.TextField(
         max_length=1000, help_text="Enter a brief description of the gift"
@@ -35,13 +33,10 @@ class Gift(models.Model):
         help_text="Enter a product code or similar as a reference",
     )
 
-    # ManyToManyField used because category can contain many gifts. Gifts can cover many categories.
     category = models.ManyToManyField(
         Category, help_text="Select a category for this gift"
     )
 
-    # Foreign Key used because gift should only have one made_in(country), but a country can make multiple gifts
-    # Made_in as a string rather than object because it hasn't been declared yet in the file
     made_in = models.ForeignKey("Country", on_delete=models.RESTRICT, null=True)
 
     class Meta:
