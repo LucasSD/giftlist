@@ -7,7 +7,7 @@ which gifts they will receive. This process currently takes place using emailed 
 
 ## Technologies
 
-Python 3.9, Django==3.2.3, coverage==5.5, Black
+Python 3.9, Django==3.2.4, coverage==5.5, Black
 
 ## Getting Started
 
