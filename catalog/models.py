@@ -127,8 +127,8 @@ class GiftInstance(models.Model):
 class Brand(models.Model):
     """Model representing a brand."""
 
-    name = models.CharField(max_length=100)
-    est = models.IntegerField(default=0)
+    name = models.CharField(max_length=100, unique=True)
+    est = models.IntegerField(null=True, blank=True)
 
     class Meta:
         ordering = ["name"]
