@@ -29,9 +29,13 @@ urlpatterns = [
 
 urlpatterns += static(
     settings.STATIC_URL, document_root=settings.STATIC_ROOT
-)  # to serve static files in development
+)  # serve static files in development
 
 # Add Django site authentication urls (for login, logout, password management)
 urlpatterns += [
     path("accounts/", include("django.contrib.auth.urls")),
+]
+
+urlpatterns += [
+    path("api/", include("giftapi.urls")),
 ]
