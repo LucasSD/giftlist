@@ -44,9 +44,8 @@ class CreateNewCountryTest(APITestCase):
             "name": "Country A",
         }
 
-        # invalid integer name
+        
         cls.invalid_payload = {
-            "name": 5
         }
 
     def test_create_valid_country(self):
