@@ -12,10 +12,10 @@ client = APIClient()
 class GetAllCountriesTest(APITestCase):
     @classmethod
     def setUpTestData(cls):
+        Country.objects.create(name="Country D")
+        Country.objects.create(name="Country C")
         Country.objects.create(name="Country A")
         Country.objects.create(name="Country B")
-        Country.objects.create(name="Country C")
-        Country.objects.create(name="Country D")
 
     def test_url_exists_at_desired_location(self):
         response = self.client.get("/api/countries/")
@@ -36,6 +36,13 @@ class GetAllCountriesTest(APITestCase):
         serializer = CountrySerializer(countries, many=True, context={"request": request})
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_ordering_by_name(self):
+        response = self.client.get(reverse("country-list"))
+        self.assertEqual(response.data[0]["name"], "Country A")
+        self.assertEqual(response.data[2]["name"], "Country C")
+
+
 
 class CreateNewCountryTest(APITestCase):
     @classmethod
@@ -67,3 +74,6 @@ class CreateNewCountryTest(APITestCase):
         )
         self.assertEqual(Country.objects.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+ 
+

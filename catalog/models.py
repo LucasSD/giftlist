@@ -142,8 +142,12 @@ class Country(models.Model):
     """Model representing a Country"""
 
     name = models.CharField(
-        max_length=200, help_text="Enter the country the gift was made in"
+        max_length=200, help_text="Enter the country the gift was made in",
+        unique=True,
     )
+
+    class Meta:
+        ordering = ["name"]
 
     def __str__(self):
         return self.name

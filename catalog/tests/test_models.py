@@ -65,6 +65,16 @@ class CountryModelTest(TestCase):
         help_text = test_country._meta.get_field("name").help_text
         self.assertEqual(help_text, "Enter the country the gift was made in")
 
+    def test_unique(self):
+        flag = False
+        # country name idential to existing country in db
+        try:
+           Country.objects.create(name="Brazil")
+        except:
+            flag = True
+        self.assertTrue(flag)
+
+
     def test_object_name_is_country_name(self):  # test __str__
         test_country = Country.objects.get(id=1)
         expected_object_name = f"{test_country.name}"
