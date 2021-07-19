@@ -10,7 +10,8 @@ class Category(models.Model):
     """Model representing a gift category."""
 
     name = models.CharField(
-        max_length=200, help_text="Enter a gift category (e.g. electronics or clothes)"
+        max_length=200, help_text="Enter a gift category (e.g. electronics or clothes)",
+        unique = True
     )
 
     def __str__(self):

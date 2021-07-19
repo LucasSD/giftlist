@@ -43,6 +43,15 @@ class CategoryModelTest(TestCase):
             test_gift.display_category(), "Perfume, Fragrance, Eau de parfum"
         )
 
+    def test_unique(self):
+        flag = False
+        # category name idential to existing entry in db
+        try:
+           Category.objects.create(name="Perfume")
+        except:
+            flag = True
+        self.assertTrue(flag)
+
     def test_object_name_is_category_name(self):  # test __str__
         test_category = Category.objects.get(id=1)
         expected_object_name = f"{test_category.name}"
