@@ -10,8 +10,12 @@ class Category(models.Model):
     """Model representing a gift category."""
 
     name = models.CharField(
-        max_length=200, help_text="Enter a gift category (e.g. electronics or clothes)"
+        max_length=200, help_text="Enter a gift category (e.g. electronics or clothes)",
+        unique = True
     )
+
+    class Meta:
+        ordering = ["name"]
 
     def __str__(self):
         """String for representing the Model object."""
@@ -34,7 +38,8 @@ class Gift(models.Model):
     )
 
     category = models.ManyToManyField(
-        Category, help_text="Select a category for this gift"
+        Category, help_text="Select a category for this gift",
+        blank=True
     )
 
     made_in = models.ForeignKey("Country", on_delete=models.RESTRICT, null=True)
@@ -123,8 +128,8 @@ class GiftInstance(models.Model):
 class Brand(models.Model):
     """Model representing a brand."""
 
-    name = models.CharField(max_length=100)
-    est = models.IntegerField(default=0)
+    name = models.CharField(max_length=100, unique=True)
+    est = models.IntegerField(null=True, blank=True)
 
     class Meta:
         ordering = ["name"]
@@ -142,8 +147,12 @@ class Country(models.Model):
     """Model representing a Country"""
 
     name = models.CharField(
-        max_length=200, help_text="Enter the country the gift was made in"
+        max_length=200, help_text="Enter the country the gift was made in",
+        unique=True,
     )
+
+    class Meta:
+        ordering = ["name"]
 
     def __str__(self):
         return self.name

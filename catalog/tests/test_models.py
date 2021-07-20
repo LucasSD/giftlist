@@ -1,8 +1,7 @@
 from datetime import datetime
 
+from catalog.models import Brand, Category, Country, Gift, GiftInstance
 from django.test import TestCase
-
-from catalog.models import Gift, Category, Brand, GiftInstance, Country
 
 
 class CategoryModelTest(TestCase):
@@ -38,10 +37,19 @@ class CategoryModelTest(TestCase):
         test_cat4 = Category.objects.get(id=4)
         test_gift = Gift.objects.get(id=1)
         test_gift.category.add(test_cat1, test_cat2, test_cat3, test_cat4)
-        # Below only returns the first three categories
+        # Below only returns the first three categories, ordered by name
         self.assertEqual(
-            test_gift.display_category(), "Perfume, Fragrance, Eau de parfum"
+            test_gift.display_category(), "Eau de cologne, Eau de parfum, Fragrance"
         )
+
+    def test_unique(self):
+        flag = False
+        # category name idential to existing entry in db
+        try:
+           Category.objects.create(name="Perfume")
+        except:
+            flag = True
+        self.assertTrue(flag)
 
     def test_object_name_is_category_name(self):  # test __str__
         test_category = Category.objects.get(id=1)
@@ -64,6 +72,16 @@ class CountryModelTest(TestCase):
         test_country = Country.objects.get(id=1)
         help_text = test_country._meta.get_field("name").help_text
         self.assertEqual(help_text, "Enter the country the gift was made in")
+
+    def test_unique(self):
+        flag = False
+        # country name identical to existing entry in db
+        try:
+           Country.objects.create(name="Brazil")
+        except:
+            flag = True
+        self.assertTrue(flag)
+
 
     def test_object_name_is_country_name(self):  # test __str__
         test_country = Country.objects.get(id=1)
