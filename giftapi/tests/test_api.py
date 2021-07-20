@@ -172,42 +172,6 @@ class GetAllBrandsTest(APITestCase):
         self.assertEqual(response.data[0]["name"], "Brand A")
         self.assertEqual(response.data[2]["name"], "Brand C")
 
-
-class GetSingleBrandTest(APITestCase):
-    @classmethod
-    def setUpTestData(cls):
-        # use different field combinations
-        cls.brandA = Brand.objects.create(
-            name="Brand A", est=1984
-        )
-        cls.brandB = Brand.objects.create(
-            name="Brand B", est=1950
-        )
-        cls.brandC = Brand.objects.create(name="Brand C")
-        cls.brandD = Brand.objects.create(name="Brand D")
-
-    def test_url_exists_at_desired_location(self):
-        response = self.client.get("/api/brands/1/")
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-    def test_url_accessible_by_name(self):
-        response = self.client.get(reverse("brand-detail", kwargs={"pk": self.brandA.pk}))
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-    def test_get_valid_single_brand(self):
-        response = client.get(reverse("brand-detail", kwargs={"pk": self.brandA.pk}))
-        request = response.wsgi_request
-        brand = Brand.objects.get(pk=self.brandA.pk)
-
-        serializer = BrandSerializer(brand, context={"request": request})
-        self.assertEqual(response.data, serializer.data)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-    def test_get_invalid_single_brand(self):
-        response = client.get(reverse("brand-detail", kwargs={"pk": 30}))
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-
-
 class CreateNewBrandTest(APITestCase):
     @classmethod
     def setUpTestData(cls):

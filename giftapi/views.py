@@ -21,3 +21,12 @@ class CategoryViewSet(mixins.CreateModelMixin,
     """
     queryset = models.Category.objects.all()
     serializer_class = serializers.CategorySerializer
+
+class BrandViewSet(mixins.CreateModelMixin,
+                                mixins.ListModelMixin,
+                                viewsets.GenericViewSet):
+    """
+    New brands are created from the brand list. 
+    """
+    queryset = models.Brand.objects.all()
+    serializer_class = serializers.BrandSerializer
