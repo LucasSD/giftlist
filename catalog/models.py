@@ -38,7 +38,8 @@ class Gift(models.Model):
     )
 
     category = models.ManyToManyField(
-        Category, help_text="Select a category for this gift"
+        Category, help_text="Select a category for this gift",
+        blank=True
     )
 
     made_in = models.ForeignKey("Country", on_delete=models.RESTRICT, null=True)

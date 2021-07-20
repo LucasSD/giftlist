@@ -1,8 +1,9 @@
 import json
 
-from catalog.models import Brand, Category, Country
+from catalog.models import Brand, Category, Country, Gift
 from django.urls import reverse
-from giftapi.serializers import BrandSerializer, CategorySerializer, CountrySerializer
+from giftapi.serializers import (BrandSerializer, CategorySerializer,
+                                 CountrySerializer)
 from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
 
@@ -207,11 +208,99 @@ class CreateNewBrandTest(APITestCase):
         self.assertEqual(Brand.objects.count(), 0)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
+class GetAllGiftsTest(APITestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # use different field combinations
+        test_category = Category.objects.create(name="Mobile Phone")
+        test_country = Country.objects.create(name="USA")
+        test_brand = Brand.objects.create(name="Apple", est=1976)
+
+        Gift.objects.create(
+            name="Iphone 11",
+            description="A brilliant smartphone",
+            ref="randomcodeABC",
+            brand=test_brand,
+            made_in=test_country,
+        )
+
+        Gift.objects.create(
+            name="Iphone 15",
+            description="An even better smartphone",
+            ref="randomcodeXYZ",
+            brand=test_brand,
+            made_in=test_country,
+        )
+
+        Gift.objects.create(
+            name="MacBook",
+            description="A nice laptop",
+            ref="randomcodeHIJ",
+            brand=test_brand,
+            made_in=test_country,
+        )
+
+    def test_url_exists_at_desired_location(self):
+        response = self.client.get("/api/gifts/")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_url_accessible_by_name(self):
+        response = self.client.get(reverse("gift-list"))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_get_all_gifts(self):
+        response = self.client.get(reverse("gift-list"))
+        gifts = Gift.objects.all()
+        request = response.wsgi_request
+
+        serializer = GiftSerializer(gifts, many=True, context={"request": request})
+        self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+class CreateNewGiftTest(APITestCase):
+    @classmethod
+    def setUpTestData(cls):
+        test_country = Country.objects.create(name="USA")
+        test_brand = Brand.objects.create(name="Apple", est=1976)
+        
+        cls.valid_payload = {
+            "name": "MacBook",
+            "description": "A nice laptop",
+            "ref": "randomcodeHIJ",
+            "brand": test_brand,
+            "made_in": test_country,
+        }
+
+        # blank name field
+        cls.invalid_payload = {
+            "name": "",
+            "description": "A nice laptop",
+            "ref": "randomcodeHIJ",
+            "brand": test_brand,
+            "made_in": test_country,
+        }
+
+    def test_create_valid_gift(self):
+        self.assertEqual(Gift.objects.count(), 0)
+        response = client.post(
+            reverse("gift-list"),
+            data=json.dumps(self.valid_payload),
+            content_type="application/json",
+        )
+        self.assertEqual(Gift.objects.count(), 1)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_create_invalid_gift(self):
+        self.assertEqual(Gift.objects.count(), 0)
+        response = client.post(
+            reverse("gift-list"),
+            data=json.dumps(self.invalid_payload),
+            content_type="application/json",
+        )
+        self.assertEqual(Gift.objects.count(), 0)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 
-
-
- 
 
  
 
