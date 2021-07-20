@@ -6,6 +6,7 @@ router = routers.DefaultRouter()
 router.register(r"countries", views.CountryViewSet)
 router.register(r"categories", views.CategoryViewSet)
 router.register(r"brands", views.BrandViewSet)
+router.register(r"gifts", views.GiftViewSet)
 
 
 urlpatterns = [

@@ -3,7 +3,7 @@ import json
 from catalog.models import Brand, Category, Country, Gift
 from django.urls import reverse
 from giftapi.serializers import (BrandSerializer, CategorySerializer,
-                                 CountrySerializer)
+                                 CountrySerializer, GiftSerializer)
 from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
 

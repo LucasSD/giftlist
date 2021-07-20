@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from catalog.models import Brand, Category, Country
+from catalog.models import Brand, Category, Country, Gift
 
 
 class CountrySerializer(serializers.HyperlinkedModelSerializer):
@@ -20,4 +20,9 @@ class BrandSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Brand
         fields = ["name", "est"]
+
+class GiftSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Gift
+        fields = ["name", "description", "ref"]
 

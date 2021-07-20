@@ -30,3 +30,12 @@ class BrandViewSet(mixins.CreateModelMixin,
     """
     queryset = models.Brand.objects.all()
     serializer_class = serializers.BrandSerializer
+
+class GiftViewSet(mixins.CreateModelMixin,
+                                mixins.ListModelMixin,
+                                viewsets.GenericViewSet):
+    """
+    New gifts are created from the gift list. 
+    """
+    queryset = models.Gift.objects.all()
+    serializer_class = serializers.GiftSerializer
