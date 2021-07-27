@@ -3,11 +3,11 @@
 
 The aim of this project is to create a website to assist my family in creating gift lists for Christmas, birthdays and other occasions. Each family member can create their own list, providing specific details of the gift they would like. 
 Each family can also view the lists of others, and can choose a gift to buy that person. Other buyers will know that that gift has been taken by someone else, and will have to select another. Receivers will not be able to see
-which gifts they will receive. This process currently takes place using emailed lists and requires a great deal of coordination to prevent duplicate gifts! 
+which gifts they will receive. This process currently takes place using emailed lists and requires a great deal of coordination to prevent duplicate gifts! I've also added an API which will expose the database to third parties. 
 
 ## Technologies
 
-Python 3.9, Django==3.2.4, coverage==5.5, Black
+Python 3.9, Django 3.2.4, coverage 5.5, Django Rest Framework 3.12.4, Black
 
 ## Getting Started
 
@@ -47,6 +47,8 @@ You will need to create a super user to access the Django admin site and to
 login (https://docs.djangoproject.com/en/3.2/ref/contrib/admin/): to do this, 
 run `python manage.py createsuperuser` and follow the instructions.
 
+The API root can be found at /api
+
 ## Project Status
 
 Still being developed. 
@@ -61,4 +63,6 @@ Still being developed.
 - Add full Django authorisation functionality, so that users can create their own accounts
 
 - Add Secret Santa functionality, including e-mails to notify users who they will be buying for 
+
+- finish API 
 
