@@ -257,7 +257,7 @@ class GetAllGiftsTest(APITestCase):
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-class CreateNewGiftTest(APITestCase):
+'''class CreateNewGiftTest(APITestCase):
     @classmethod
     def setUpTestData(cls):
         test_country = Country.objects.create(name="USA")
@@ -298,7 +298,7 @@ class CreateNewGiftTest(APITestCase):
             content_type="application/json",
         )
         self.assertEqual(Gift.objects.count(), 0)
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)'''
 
 
 
