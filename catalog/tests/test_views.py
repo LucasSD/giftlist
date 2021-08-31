@@ -10,7 +10,6 @@ from catalog.models import Gift, Category, Brand, GiftInstance, Country
 class CatalogIndexViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-
         test_brand = Brand.objects.create(name="Apple", est=2001)
 
         other_brand = Brand.objects.create(name="Chanel", est=1954)
@@ -124,9 +123,9 @@ class GiftListViewTest(TestCase):
         response2 = self.client.get(reverse("gifts") + "?page=2")
         self.assertEqual(response2.status_code, 200)
         for j, test_gift in enumerate(response2.context["gift_list"]):
-            self.assertEqual(f"ref {j+3}", test_gift.ref)  # adjust j for second page
+            self.assertEqual(f"ref {j + 3}", test_gift.ref)  # adjust j for second page
             self.assertEqual(
-                f"Iphone {j+3}", test_gift.name
+                f"Iphone {j + 3}", test_gift.name
             )  # adjust j for second page
             self.assertEqual("Apple", str(test_gift.brand))
 
@@ -194,7 +193,6 @@ class GiftDetailViewTest(TestCase):
 class GiftInstanceListViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-
         test_brand = Brand.objects.create(name="Apple", est=2001)
 
         num_gifts = 6
@@ -259,6 +257,95 @@ class GiftInstanceListViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(1, len(response.context["giftinstance_list"]))
 
+
+class GiftInstanceCreateViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        test_brand = Brand.objects.create(name="Apple", est=2001)
+        other_brand = Brand.objects.create(name="Chanel", est=1954)
+
+        Gift.objects.create(
+            name="Chanel Man",
+            description="A brilliant perfume",
+            ref="randomcodeABC",
+            brand=other_brand,
+        )
+
+        Gift.objects.create(
+            name="Iphone 11",
+            description="A brilliant smartphone",
+            ref="randomcodeAZC",
+            brand=test_brand,
+        )
+
+        test_requester = User.objects.create(username="johnsmith", password="password")
+
+        test_gift = Gift.objects.get(id=1)
+        other_gift = Gift.objects.get(id=2)
+
+        form_entry = {
+            "gift": test_gift,
+            "event_date": "25/12/2021",
+            "size": "200ml",
+            "colour": "NA",
+            "price": "£90",
+            "url": "www.chanel.com",
+            "requester": test_requester,
+            "status": "a",
+        }
+
+    def setUp(self):
+        self.client.force_login(user=User.objects.get(id=1))
+
+    def test_redirect_if_not_logged_in(self):
+        self.client.logout()
+        response = self.client.get(reverse("giftinstance-create"))
+        self.assertRedirects(
+            response, f"/accounts/login/?next=/catalog/mygift/create"
+        )
+
+    def test_view_url_exists_at_desired_location(self):
+        response = self.client.get(f"/catalog/mygift/create")
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_url_accessible_by_name(self):
+        response = self.client.get(reverse("giftinstance-create"))
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        response = self.client.get(reverse("giftinstance-create"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "catalog/giftinstance_form.html")
+        self.assertTemplateUsed(response, "base_generic.html")
+
+    def test_initial_form_context(self):
+        response = self.client.get(reverse("giftinstance-create"))
+        self.assertEqual(response.status_code, 200)
+        test_form = response.context["form"]
+        self.assertIn("form", response.context)
+        self.assertEqual({}, test_form.initial)
+
+    def test_form_post(self):
+        self.assertEqual(GiftInstance.objects.count(), 0)
+        response = self.client.post(reverse("giftinstance-create"), data=self.form_entry)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(GiftInstance.objects.count(), 1)
+
+        test_giftinstance = GiftInstance.objects.get(id=1)
+        self.assertEqual("200ml", test_giftinstance.size)
+        self.assertEqual("johnsmith", str(test_giftinstance.requester))
+        self.assertEqual("Chanel Man", test_giftinstance.gift)
+
+    def test_form_post_invalid(self):
+        # empty form
+        invalid_form_entry = {
+        }
+
+        response = self.client.post(reverse("giftinstance-create"), data=invalid_form_entry)
+        self.assertEqual(response.status_code, 200)
+
+        # check nothing added to database
+        self.assertEqual(GiftInstance.objects.count(), 0)
 
 class GiftInstanceUpdateViewTest(TestCase):
     @classmethod
@@ -383,7 +470,7 @@ class BrandListViewTest(TestCase):
         response1 = self.client.get(reverse("brands"))
         self.assertEqual(response1.status_code, 200)
         for i, test_brand in enumerate(response1.context["brand_list"]):
-            self.assertEqual(f"Brand {i+1}", test_brand.name)
+            self.assertEqual(f"Brand {i + 1}", test_brand.name)
             self.assertEqual(1900 + i + 1, test_brand.est)
 
         response2 = self.client.get(reverse("brands") + "?page=3")
