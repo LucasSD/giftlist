@@ -283,7 +283,7 @@ class GiftInstanceCreateViewTest(TestCase):
         test_gift = Gift.objects.get(id=1)
         other_gift = Gift.objects.get(id=2)
 
-        form_entry = {
+        cls.form_entry = {
             "gift": test_gift,
             "event_date": "25/12/2021",
             "size": "200ml",

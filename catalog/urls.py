@@ -14,4 +14,9 @@ urlpatterns = [
         views.GiftInstanceUpdateView.as_view(),
         name="giftinstance-update",
     ),
+    path(
+        "mygift/create",
+        views.GiftInstanceCreateView.as_view(),
+        name="giftinstance-create",
+    ),
 ]

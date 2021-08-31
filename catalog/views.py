@@ -79,3 +79,9 @@ class GiftInstanceUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = GiftInstance
     fields = ["gift", "event_date", "size", "colour", "price", "url", "requester"]
     success_url = reverse_lazy("mygifts")
+
+
+class GiftInstanceCreateView(LoginRequiredMixin, generic.CreateView):
+    model = GiftInstance
+    fields = ["gift", "event_date", "size", "colour", "price", "url", "requester"]
+    success_url = reverse_lazy("mygifts")
