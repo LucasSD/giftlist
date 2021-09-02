@@ -1,4 +1,4 @@
-import uuid  # Required for unique book instances
+import uuid  # Required for unique gift instances
 from datetime import date
 
 from django.contrib.auth.models import User

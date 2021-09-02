@@ -2,6 +2,8 @@
 
 {% block content %}
   <h1>My Gift List</h1>
+<a href="{% url 'giftinstance-create' %}">Add to my GiftList</a></li>
+<hr>
   {% if giftinstance_list %}
   <ul>
     {% for my_gift in giftinstance_list %}
@@ -10,7 +12,9 @@
       </li>
     {% endfor %}
   </ul>
+
   {% else %}
     <p>You have not requested any gifts.</p>
-  {% endif %} 
+  {% endif %}
+
 {% endblock %}

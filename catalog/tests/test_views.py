@@ -1,5 +1,5 @@
 from datetime import datetime
-
+import uuid
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.test import TestCase
@@ -259,42 +259,8 @@ class GiftInstanceListViewTest(TestCase):
 
 
 class GiftInstanceCreateViewTest(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        test_brand = Brand.objects.create(name="Apple", est=2001)
-        other_brand = Brand.objects.create(name="Chanel", est=1954)
-
-        Gift.objects.create(
-            name="Chanel Man",
-            description="A brilliant perfume",
-            ref="randomcodeABC",
-            brand=other_brand,
-        )
-
-        Gift.objects.create(
-            name="Iphone 11",
-            description="A brilliant smartphone",
-            ref="randomcodeAZC",
-            brand=test_brand,
-        )
-
-        test_requester = User.objects.create(username="johnsmith", password="password")
-
-        test_gift = Gift.objects.get(id=1)
-        other_gift = Gift.objects.get(id=2)
-
-        cls.form_entry = {
-            "gift": test_gift,
-            "event_date": "25/12/2021",
-            "size": "200ml",
-            "colour": "NA",
-            "price": "£90",
-            "url": "www.chanel.com",
-            "requester": test_requester,
-            "status": "a",
-        }
-
     def setUp(self):
+        User.objects.create(username="johnsmith", password="password")
         self.client.force_login(user=User.objects.get(id=1))
 
     def test_redirect_if_not_logged_in(self):
@@ -326,14 +292,46 @@ class GiftInstanceCreateViewTest(TestCase):
         self.assertEqual({}, test_form.initial)
 
     def test_form_post(self):
+        test_brand = Brand.objects.create(name="Apple", est=2001)
+        other_brand = Brand.objects.create(name="Chanel", est=1954)
+
+        Gift.objects.create(
+            name="Chanel Man",
+            description="A brilliant perfume",
+            ref="randomcodeABC",
+            brand=other_brand,
+        )
+
+        Gift.objects.create(
+            name="Iphone 11",
+            description="A brilliant smartphone",
+            ref="randomcodeAZC",
+            brand=test_brand,
+        )
+
+        test_requester = User.objects.create(username="lucas", password="password")
+
+        test_gift = Gift.objects.get(id=1)
+        other_gift = Gift.objects.get(id=2)
+
+        form_entry = {
+            "Gift": test_gift,
+            "event_date": "2021-12-25",
+            "size": "200ml",
+            "colour": "NA",
+            "price": 90,
+            "url": "https://realpython.com/factory-method-python/",
+            "requester": test_requester,
+
+        }
         self.assertEqual(GiftInstance.objects.count(), 0)
-        response = self.client.post(reverse("giftinstance-create"), data=self.form_entry)
+        response = self.client.post(reverse("giftinstance-create"), data=form_entry)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(GiftInstance.objects.count(), 1)
 
         test_giftinstance = GiftInstance.objects.get(id=1)
         self.assertEqual("200ml", test_giftinstance.size)
-        self.assertEqual("johnsmith", str(test_giftinstance.requester))
+        self.assertEqual("lucas", str(test_giftinstance.requester))
         self.assertEqual("Chanel Man", test_giftinstance.gift)
 
     def test_form_post_invalid(self):
