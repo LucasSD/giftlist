@@ -51,7 +51,7 @@ The API root can be found at /api
 
 ## Project Status
 
-Still being developed. 
+On hold. 
 ###### To do:
 
 - Add forms for users to add their own gift requests and to build their own lists (gifts currently need to be added in Django Admin) 
